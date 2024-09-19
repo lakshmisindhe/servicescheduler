@@ -9,6 +9,10 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Calendar } from "@/components/ui/calendar"
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+
+declare module 'file-saver';
 
 export function Page() {
   const router = useRouter()
@@ -20,19 +24,45 @@ export function Page() {
   const [contactNumber, setContactNumber] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // In a real application, you would send this data to your API
-    console.log('New client:', {
+    e.preventDefault();
+
+    const newClient = {
       hardwareId,
       installationDate,
       serviceDueDate,
       companyName,
       companyAddress,
       contactNumber
-    })
+    };
+
+    // Create a new workbook and add a worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([newClient]);
+    XLSX.utils.book_append_sheet(wb, ws, "New Client");
+
+    // Generate Excel file
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    
+    // Save the file
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'test.xlsx');
+
+    console.log('New client saved to Excel file:', newClient);
+
     // Redirect to the homepage after submission
-    router.push('/')
+    router.push('/');
   }
+
+  const handleSaveExcel = async () => {
+    try {
+      const response = await fetch('/public/test.xlsx');
+      const blob = await response.blob();
+      saveAs(blob, 'test.xlsx');
+    } catch (error) {
+      console.error('Error saving Excel file:', error);
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
