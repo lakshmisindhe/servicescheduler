@@ -54,15 +54,7 @@ export function Page() {
     router.push('/');
   }
 
-  const handleSaveExcel = async () => {
-    try {
-      const response = await fetch('/public/test.xlsx');
-      const blob = await response.blob();
-      saveAs(blob, 'test.xlsx');
-    } catch (error) {
-      console.error('Error saving Excel file:', error);
-    }
-  };
+  
 
   return (
     <div className="container mx-auto p-4">

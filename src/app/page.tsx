@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Calendar } from "@/components/ui/calendar"
-import { cn } from "@/lib/utils"
+
 import { format } from 'date-fns'
 
 // Type definition for a client
