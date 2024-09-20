@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    distDir: 'build', // Default output directory for Next.js builds
-  };
-  module.exports = nextConfig;
+    // Remove or adjust distDir if necessary
+    // distDir: 'build', // Comment this out if using default
+}
+
+export default nextConfig;
